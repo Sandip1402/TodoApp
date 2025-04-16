@@ -13,10 +13,13 @@ class TodoViewModel(private val dao: TodoDao) : ViewModel() {
         emptyList()
     )
 
-    fun addTodo(task: String) {
+    fun addTodo(task: String, desc: String) {
         viewModelScope.launch {
-            dao.insert(Todo(task = task))
+            dao.insert(Todo(task = task, desc = desc))
         }
+    }
+    fun editTodo(todo: Todo){
+
     }
 
     fun toggleDone(todo: Todo) {
