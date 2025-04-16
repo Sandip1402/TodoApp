@@ -1,5 +1,6 @@
 package com.example.mytodo
 
+import androidx.annotation.RequiresPermission
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
@@ -13,6 +14,9 @@ interface TodoDao {
 
     @Update
     suspend fun update(todo: Todo)
+
+//    @Query("SELECT * FROM Todo WHERE id =:id LIMIT 1")
+//    suspend fun get(id: Int): Flow<Todo?>
 
     @Delete
     suspend fun delete(todo: Todo)
