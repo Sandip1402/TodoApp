@@ -33,6 +33,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.mytodo.viewmodel.TodoViewModel
 
 
@@ -55,7 +56,6 @@ fun TodoItem(viewModel: TodoViewModel, todo: Todo, onToggleDone: () -> Unit, onT
             text = todo.task,
             modifier = Modifier.weight(1f),
             textDecoration = if (todo.isDone) TextDecoration.LineThrough else TextDecoration.None,
-
         )
         IconButton(onClick = { onToggleEdit() }) {
             Icon(Icons.Default.Edit, contentDescription = "Edit")
@@ -120,14 +120,13 @@ fun TaskDetail(todo: Todo, dismiss: () -> Unit){
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
+                .padding(5.dp,10.dp)
                 .fillMaxWidth(1f)
                 .background(color = Color.White)
         ){
-            Text(todo.task, fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(0.dp, 10.dp))
+            Text(todo.task, fontWeight = FontWeight.Bold, fontSize = 18.sp)
             Spacer(modifier = Modifier.height(8.dp))
-            Text(todo.desc,
-                modifier = Modifier.padding(0.dp, 5.dp))
+            Text(todo.desc)
         }
     }
 }
