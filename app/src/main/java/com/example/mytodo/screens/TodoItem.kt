@@ -1,9 +1,10 @@
-package com.example.mytodo
+package com.example.mytodo.screens
 
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -34,6 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.mytodo.Todo
 import com.example.mytodo.viewmodel.TodoViewModel
 
 
@@ -41,32 +43,33 @@ import com.example.mytodo.viewmodel.TodoViewModel
 fun TodoItem(viewModel: TodoViewModel, todo: Todo, onToggleDone: () -> Unit, onToggleEdit: () -> Unit, onDelete: () -> Unit) {
     var showDialog = remember{ mutableStateOf(false)}
     if(showDialog.value)
-        TaskDetail(todo, {showDialog.value = false})
+        TaskDetail(todo) { showDialog.value = false }
 
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp)
-            .background(color = Color.LightGray)
-            .clickable { showDialog.value = true },
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Checkbox(checked = todo.isDone, onCheckedChange = { onToggleDone() })
-        Text(
-            text = todo.task,
-            modifier = Modifier.weight(1f),
-            textDecoration = if (todo.isDone) TextDecoration.LineThrough else TextDecoration.None,
-        )
-        IconButton(onClick = { onToggleEdit() }) {
-            Icon(Icons.Default.Edit, contentDescription = "Edit")
-            if(todo.edit){
-                PopUpForm(viewModel, todo)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(1f)
+                .padding(8.dp)
+                .background(color = Color.LightGray)
+                .clickable { showDialog.value = true },
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Checkbox(checked = todo.isDone, onCheckedChange = { onToggleDone() })
+            Text(
+                text = todo.task,
+                modifier = Modifier.weight(1f),
+                textDecoration = if (todo.isDone) TextDecoration.LineThrough else TextDecoration.None,
+            )
+            IconButton(onClick = { onToggleEdit() }) {
+                Icon(Icons.Default.Edit, contentDescription = "Edit")
+                if (todo.edit) {
+                    PopUpForm(viewModel, todo)
+                }
+            }
+            IconButton(onClick = { onDelete() }) {
+                Icon(Icons.Default.Delete, contentDescription = "Delete")
             }
         }
-        IconButton(onClick = { onDelete()} ) {
-            Icon(Icons.Default.Delete, contentDescription = "Delete")
-        }
-    }
+
 }
 
 @Composable
@@ -94,7 +97,7 @@ fun PopUpForm(viewModel: TodoViewModel, todo: Todo) {
         confirmButton = {
             Button(
                 onClick = {
-                    viewModel.editDone(Todo(todo.id,taskName, taskDesc))
+                    viewModel.editDone(Todo(todo.id, taskName, taskDesc))
                 },
                 enabled = taskName.isNotBlank()
             ) {
